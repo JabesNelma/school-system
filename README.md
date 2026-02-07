@@ -1,128 +1,433 @@
-<div align="center">
-   <h1>School Information System</h1>
-   <p>Full‑stack School Information System with Flask API and Next.js App Router.</p>
-   <p><strong>Admin login (default):</strong> admin / admin123 — change after first login.</p>
-</div>
+# School Information System
 
-## Contents
-- Overview
-- Tech Stack
-- Project Structure
-- Prerequisites
-- Environment Variables
-- Quick Start (Development)
-- Database & Migrations
-- Common Tasks
-- Testing & Health Checks
-- Deployment Notes
-- Troubleshooting
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit-blue?style=for-the-badge&logo=vercel)](https://school-system-copeunqus-jabes-nelmas-projects.vercel.app/)
 
-## Overview
-Modern, responsive school platform with:
-- Public site: hero, teacher directory, materials, schedules, student registration.
-- Admin: JWT auth, dashboard stats, CRUD for students/teachers/materials/schedules, registration review.
-- UX: light/dark theme, toasts, skeletons, Framer Motion animations.
+A modern, full-stack web application for managing school operations including student registration, teacher profiles, course schedules, and educational materials.
+
+---
+
+## Live Demo
+
+**[Visit the Live Application](https://school-system-copeunqus-jabes-nelmas-projects.vercel.app/)**
+
+**Demo URL:** `https://school-system-copeunqus-jabes-nelmas-projects.vercel.app/`
+
+**Default Admin Login:** `admin` / `admin123` (change after first login)
+
+---
+
+## Project Overview
+
+The **School Information System** is a comprehensive digital platform designed to streamline school management operations. It provides administrators, teachers, and students with an intuitive interface to manage registrations, view schedules, access learning materials, and maintain teacher information.
+
+### Problem Solved
+
+Traditional school management relies on manual processes, spreadsheets, and fragmented systems. This platform centralizes all critical information in one accessible location, reducing administrative overhead and improving information accessibility.
+
+### Target Users
+
+| Role | Description |
+|------|-------------|
+| **Administrators** | Manage the system, handle student registrations, and oversee all operations |
+| **Teachers** | Maintain professional profiles, manage course schedules, and upload educational materials |
+| **Students** | Register for courses, view class schedules, access learning materials, and discover teacher information |
+| **Public Users** | Browse available teachers, view schedules, and submit student registrations |
+
+---
+
+## Features
+
+- **Admin Dashboard** — Comprehensive management interface with JWT-based role-based access control
+- **Student Registration** — Streamlined, validated registration workflow with confirmation
+- **Teacher Management** — Complete teacher profiles organized by department with search and filtering
+- **Course Schedules** — Interactive schedule management with real-time updates and filtering capabilities
+- **Learning Materials** — Upload, organize, categorize, and distribute educational resources
+- **Secure Authentication** — JWT token-based authentication with refresh token support
+- **Responsive Design** — Fully responsive UI optimized for desktop, tablet, and mobile devices
+- **Dark/Light Theme** — User preference toggle with persistent storage
+- **CORS-Enabled API** — Secure cross-origin request handling between frontend and backend
+- **Real-time Feedback** — Toast notifications and skeleton loading states for better UX
+
+---
 
 ## Tech Stack
-- 🐍 **Backend:** Flask, Flask-SQLAlchemy, Flask-JWT-Extended, Flask-Migrate, Flask-CORS, PostgreSQL (SQLite for local quick start).
-- ⚛️ **Frontend:** Next.js 14 (App Router), React, Tailwind CSS, Framer Motion, Lucide Icons.
-- 🗄️ **Database:** PostgreSQL (prod), SQLite (local), SQLAlchemy ORM.
-- 🧪 **Auth & Security:** JWT, password hashing (Werkzeug), CORS.
-- 🎨 **UI/UX:** Tailwind CSS, Framer Motion, theme toggle (light/dark), toast & skeleton states.
 
-## Project Structure
+### Frontend
+
+| Technology | Purpose |
+|------------|---------|
+| Next.js 14+ | React framework with App Router |
+| Tailwind CSS | Utility-first styling |
+| Framer Motion | Animations and transitions |
+| React Context API | State management |
+| Lucide React | Icon library |
+| Fetch API | HTTP client with custom wrapper |
+
+### Backend
+
+| Technology | Purpose |
+|------------|---------|
+| Flask 3.0+ | Python web framework |
+| SQLAlchemy | ORM with Flask-SQLAlchemy |
+| Flask-JWT-Extended | JWT authentication |
+| Flask-Migrate | Database migrations |
+| Flask-CORS | Cross-origin resource sharing |
+| Gunicorn | WSGI HTTP server |
+
+### Database & Infrastructure
+
+| Technology | Purpose |
+|------------|---------|
+| PostgreSQL 12+ | Production database |
+| SQLite | Local development database |
+| Git + GitHub | Version control |
+| Vercel | Frontend hosting |
+| Render | Backend hosting |
+
+---
+
+## Project Architecture
+
 ```
-school-system/
-├── backend/              # Flask API
-│   ├── app/              # models, routes, utils, extensions
-│   ├── config.py         # config classes
-│   ├── run.py            # app entrypoint
-│   └── requirements.txt  # Python deps
-└── frontend/             # Next.js app
-      ├── src/              # app router pages, components, contexts, lib
-      └── package.json      # JS deps
+┌─────────────────────────────────────────────────────────────┐
+│                        Frontend (Next.js)                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │   Admin     │  │   Public     │  │   Shared Components │ │
+│  │   Pages     │  │   Pages      │  │   & Context         │ │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              │ REST API (HTTP/HTTPS)
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                        Backend (Flask)                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │   Routes    │  │   Models     │  │   Utilities         │ │
+│  │   & Logic   │  │   & Database │  │   & Validators      │ │
+│  └─────────────┘  └─────────────┘  └─────────────────────┘ │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              │ SQL
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      PostgreSQL Database                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## Prerequisites
-- Python 3.9+
-- Node.js 18+
-- PostgreSQL (or use SQLite for local dev)
+### Architecture Overview
 
-## Environment Variables
+- **Frontend**: Next.js application serves as the presentation layer, handling all user interfaces and interactions
+- **Backend**: Flask REST API manages business logic, authentication, and data processing
+- **Database**: PostgreSQL stores all persistent data including users, schedules, materials, and registrations
 
-### Backend (.env)
-```
-DATABASE_URL=postgresql://username:password@localhost:5432/school_db
-JWT_SECRET_KEY=change-me
-FLASK_ENV=development
-FLASK_APP=run.py
-```
-For quick local dev you can use SQLite:
-```
-DATABASE_URL=sqlite:///school.db
-```
+---
 
-### Frontend (.env.local)
-```
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
+## Installation & Setup
 
-## Quick Start (Development)
+### Prerequisites
 
-### 1) Backend
+| Requirement | Version | Description |
+|-------------|---------|-------------|
+| Node.js | 18+ | Frontend runtime |
+| Python | 3.11+ | Backend runtime |
+| PostgreSQL | 12+ | Production database |
+| Git | Latest | Version control |
+| npm/yarn | Latest | Frontend package manager |
+
+### Backend Setup
+
 ```bash
-cd backend
+# Clone the repository
+git clone https://github.com/JabesNelma/school-system.git
+cd school-system/backend
+
+# Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install Python dependencies
 pip install -r requirements.txt
-cp .env.example .env      # edit values as needed
-python run.py             # starts on http://localhost:5000
+
+# Configure environment variables
+# Create a .env file in the backend folder
 ```
 
-### 2) Frontend
+**.env (Backend)**
+
+```env
+DATABASE_URL=sqlite:///school.db
+JWT_SECRET_KEY=your-secret-key-change-this-in-production
+FLASK_ENV=development
+FLASK_APP=run.py
+SECRET_KEY=your-flask-secret-key-change-this-in-production
+ADMIN_PASSWORD=admin123
+CORS_ORIGINS=http://localhost:3000
+```
+
+**Start the backend server:**
+
 ```bash
-cd frontend
-npm install
-echo "NEXT_PUBLIC_API_URL=http://localhost:5000" > .env.local
-npm run dev                # starts on http://localhost:3000
+python run.py
 ```
 
-### 3) Login (Admin)
-- URL: http://localhost:3000/admin/login
-- Default: **admin / admin123** (change after first login via Users management).
+Server runs at: `http://localhost:5000`
 
-## Database & Migrations (Flask-Migrate)
+### Frontend Setup
+
+```bash
+# Navigate to frontend directory
+cd ../frontend
+
+# Install Node.js dependencies
+npm install
+
+# Configure environment variables
+# Create a .env.local file
+```
+
+**.env.local (Frontend)**
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+NEXT_PUBLIC_ENV=development
+```
+
+**Start the development server:**
+
+```bash
+npm run dev
+```
+
+Application runs at: `http://localhost:3000`
+
+---
+
+## Running the Project
+
+### Development Mode
+
+**Terminal 1 - Backend:**
+
 ```bash
 cd backend
 source venv/bin/activate
-flask db init      # first time only
-flask db migrate -m "message"
-flask db upgrade
+python run.py
 ```
 
-## Common Tasks
-- **Run backend with auto-reload:** `FLASK_DEBUG=1 python run.py`
-- **Run frontend dev server:** `npm run dev`
-- **Reset frontend cache:** from frontend dir `rm -rf .next && npm run dev`
-- **Create admin user manually (if needed):** default seed creates admin/admin123; update password via Users API/UI.
+**Terminal 2 - Frontend:**
 
-## Testing & Health Checks
-- Backend health: `curl http://localhost:5000/api/health`
-- Auth test: `curl -X POST http://localhost:5000/api/auth/login -H "Content-Type: application/json" -d '{"username":"admin","password":"admin123"}'`
-- Public endpoints: `/api/public/teachers`, `/api/public/materials`, `/api/public/schedules`, `/api/public/register`
-- Admin stats (needs Bearer token): `/api/admin/dashboard/stats`
+```bash
+cd frontend
+npm run dev
+```
 
-## Deployment Notes
-- **Backend (e.g., Render / any WSGI host):**
-   - Set env vars: `DATABASE_URL`, `JWT_SECRET_KEY`, `FLASK_ENV=production`.
-   - Run with gunicorn using `run.py` / app factory.
-- **Frontend (e.g., Vercel):** set `NEXT_PUBLIC_API_URL` to deployed backend URL.
+Access the application at `http://localhost:3000` and login at `/admin/login` with `admin` / `admin123`
 
-## Troubleshooting
-- **JWT errors / 401/422 in admin calls:** clear browser storage (access_token/refresh_token/user) then login again.
-- **ChunkLoadError / stale assets:** remove `.next` and restart `npm run dev`.
-- **DB auth failures:** verify `DATABASE_URL`; for local quick use SQLite as shown above.
-- **CORS issues:** backend uses Flask-CORS; ensure `NEXT_PUBLIC_API_URL` matches backend URL.
+### Production Build
+
+**Frontend:**
+
+```bash
+cd frontend
+npm run build && npm start
+```
+
+**Backend:**
+
+```bash
+cd backend
+gunicorn run:app --workers 4
+```
+
+---
+
+## Deployment
+
+### Frontend (Vercel)
+
+| Setting | Value |
+|---------|-------|
+| Framework | Next.js |
+| Root Directory | `frontend` |
+| Build Command | `npm run build` |
+| Output Directory | `.next` |
+
+**Environment Variables:**
+
+```
+NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
+```
+
+**Live URL:** https://school-system-copeunqus-jabes-nelmas-projects.vercel.app/
+
+### Backend (Render)
+
+| Setting | Value |
+|---------|-------|
+| Service Type | Web Service |
+| Runtime | Python 3.11.9 |
+| Root Directory | `backend` |
+| Build Command | `pip install -r requirements.txt` |
+| Start Command | `gunicorn run:app` |
+
+**Environment Variables:**
+
+```
+PYTHON_VERSION=3.11.9
+DATABASE_URL=postgresql://user:password@host:port/database
+JWT_SECRET_KEY=your-super-secret-key
+ADMIN_PASSWORD=your-secure-admin-password
+FLASK_ENV=production
+CORS_ORIGINS=https://school-system-copeunqus-jabes-nelmas-projects.vercel.app
+```
+
+---
+
+## Folder Structure
+
+```
+school-system/
+├── backend/
+│   ├── app/
+│   │   ├── models/         # Database models (Student, Teacher, Schedule, etc.)
+│   │   ├── routes/         # API endpoints (auth, admin, public)
+│   │   ├── utils/          # Helper functions, validators, seed data
+│   │   ├── __init__.py     # Application factory
+│   │   └── extensions.py   # Flask extensions initialization
+│   ├── config.py           # Application configuration
+│   ├── run.py              # Application entry point
+│   ├── requirements.txt    # Python dependencies
+│   └── gunicorn.conf.py    # Gunicorn configuration
+│
+├── frontend/
+│   ├── src/
+│   │   ├── app/            # Next.js pages (App Router)
+│   │   │   ├── admin/      # Admin dashboard pages
+│   │   │   ├── materials/  # Materials page
+│   │   │   ├── register/   # Registration page
+│   │   │   ├── schedules/  # Schedules page
+│   │   │   └── teachers/   # Teachers page
+│   │   ├── components/     # Reusable UI components
+│   │   ├── contexts/       # React contexts (Auth, Theme, Toast)
+│   │   └── lib/            # Utility functions and API wrapper
+│   ├── package.json        # Node.js dependencies
+│   └── next.config.js      # Next.js configuration
+│
+├── DEPLOYMENT.md           # Detailed deployment guide
+└── README.md               # Project documentation
+```
+
+---
+
+## API Documentation
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/login` | User authentication |
+| POST | `/api/auth/refresh` | Refresh access token |
+| POST | `/api/auth/logout` | User logout |
+| GET | `/api/auth/me` | Get current user |
+
+### Public Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/public/teachers` | List all teachers |
+| GET | `/api/public/materials` | List all materials |
+| GET | `/api/public/schedules` | List all schedules |
+| POST | `/api/public/register` | Submit student registration |
+
+### Admin Endpoints (JWT Required)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/admin/dashboard/stats` | Dashboard statistics |
+| GET | `/api/admin/students` | List all students |
+| GET | `/api/admin/teachers` | Manage teachers |
+| GET | `/api/admin/schedules` | Manage schedules |
+| GET | `/api/admin/materials` | Manage materials |
+
+---
+
+## Screenshots
+
+*To add screenshots:*
+
+1. Create a `screenshots/` directory in the project root
+2. Add your screenshots in PNG or JPG format
+3. Reference them using relative paths:
+
+```markdown
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+![Student Registration](./screenshots/registration.png)
+```
+
+Recommended screenshot dimensions: 1920x1080 pixels
+
+---
+
+## Roadmap
+
+- [ ] **User Roles Expansion** — Add separate login portals for teachers and students
+- [ ] **Parent Portal** — Enable parents to track their children's progress
+- [ ] **Attendance Tracking** — Digital attendance system with reports
+- [ ] **Grade Management** — Grade entry and academic performance tracking
+- [ ] **Notification System** — Email and push notifications for events
+- [ ] **Analytics Dashboard** — Advanced reporting and data visualization
+- [ ] **Multi-language Support** — Internationalization for multiple languages
+- [ ] **Mobile App** — React Native companion mobile application
+- [ ] **Online Examination** — Conduct and grade assessments online
+- [ ] **Fee Management** — Online fee collection and receipt generation
+
+---
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork the repository** — Click the Fork button on GitHub
+2. **Create a feature branch**
+
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **Commit your changes**
+
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+
+4. **Push to the branch**
+
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+5. **Open a Pull Request** — Describe your changes and submit for review
+
+Please ensure your code follows the existing style and includes appropriate tests.
+
+---
 
 ## License
-MIT
+
+This project is licensed under the MIT License.
+
+---
+
+## Author
+
+**Jabes Nelma**
+
+- GitHub: [@JabesNelma](https://github.com/JabesNelma)
+- Repository: [school-system](https://github.com/JabesNelma/school-system)
+
+For issues or questions, [open an issue on GitHub](https://github.com/JabesNelma/school-system/issues).
+
+---
+
+**Built with care for educational institutions.** 🚀
+
