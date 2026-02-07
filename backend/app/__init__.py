@@ -14,10 +14,18 @@ def create_app(config_name='default'):
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    # Allow cross-origin requests from configured origins (needed for Vercel frontend)
+    
+    # Allow cross-origin requests from approved origins
+    # Using specific origins instead of wildcard allows credentials
     cors.init_app(
         app,
-        resources={r"/api/*": {"origins": app.config['CORS_ORIGINS']}},
+        resources={r"/api/*": {"origins": [
+            "https://school-system-copeunqus-jabes-nelmas-projects.vercel.app",
+            "http://localhost:3000",
+            "https://school-system-henna.vercel.app"
+        ]}},
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"],
         supports_credentials=True
     )
     
