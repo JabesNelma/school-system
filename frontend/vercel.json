@@ -3,6 +3,7 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "env": {
-    "NEXT_PUBLIC_API_URL": "@next_public_api_url"
+    "NEXT_PUBLIC_API_URL": "https://school-system-k6ip.onrender.com",
+    "NEXT_PUBLIC_ENV": "production"
   }
 }
