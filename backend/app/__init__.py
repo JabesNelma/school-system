@@ -14,7 +14,12 @@ def create_app(config_name='default'):
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-    cors.init_app(app, origins=app.config['CORS_ORIGINS'])
+    # Allow cross-origin requests from configured origins (needed for Vercel frontend)
+    cors.init_app(
+        app,
+        resources={r"/api/*": {"origins": app.config['CORS_ORIGINS']}},
+        supports_credentials=True
+    )
     
     # Register blueprints
     from app.routes.auth import auth_bp
