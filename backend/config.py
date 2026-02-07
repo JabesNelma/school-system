@@ -23,7 +23,7 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     """Production configuration."""
-    DEBUG = False
+    CORS_ORIGINS = os.getenv('CORS_ORIGINS', '*')
 
 class TestingConfig(Config):
     """Testing configuration."""
